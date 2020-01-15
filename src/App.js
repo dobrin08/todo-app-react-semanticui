@@ -12,15 +12,14 @@ class App extends React.Component {
     super()
     this.state = {
       items: [],
-      currentItem: {text:'', key:'', completed: null},
+      currentItem: { text:'', key:'', completed: null },
     }
   }
 
   handleInput = e => {
-    const itemText = e.target.value
-    const currentItem = { text: itemText, key: Date.now(), completed: false }
+    const itemText = e.target.value;
     this.setState({
-      currentItem,
+      currentItem: { text: itemText, key: Date.now(), completed: false }
     })
   }
 
@@ -31,7 +30,7 @@ class App extends React.Component {
       const items = [...this.state.items, newItem]
       this.setState({
         items: items,
-        currentItem: { text: '', key: '' },
+        currentItem: { text: '', key: '', completed: null },
       })
     }
   }

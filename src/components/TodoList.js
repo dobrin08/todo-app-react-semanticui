@@ -12,6 +12,7 @@ class TodoList extends Component {
             action='Add'
             placeholder="Add Task"
             size='big'
+            autoFocus
             fluid
             ref={this.props.inputElement}
             value={this.props.currentItem.text}

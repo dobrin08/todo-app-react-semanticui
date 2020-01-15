@@ -5,7 +5,7 @@ class TodoItems extends Component {
   createTasks = item => {
     return (
       <List.Item key={item.key}>
-	    <List.Content>
+        <List.Content>
           <input
             type="checkbox"
             onChange={(event) => this.props.handleChange(item.key, event)} />
@@ -15,8 +15,8 @@ class TodoItems extends Component {
           </span>
         </List.Content>
 
-	    <Button size='mini' color='red' onClick={() => this.props.deleteItem(item.key)}>Remove</Button>
-	  </List.Item>
+        <Button size='mini' color='red' onClick={() => this.props.deleteItem(item.key)}>Remove</Button>
+      </List.Item>
     )
   }
 
