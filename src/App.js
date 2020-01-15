@@ -8,40 +8,49 @@ import 'semantic-ui-less/semantic.less'
 import './App.css'
 
 class App extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      items: [],
-      currentItem: { text:'', key:'', completed: null },
-    }
-  }
+  state = {
+    items: [],
+    currentItem: null,
+  };
+  inputElement = React.createRef();
 
   handleInput = e => {
-    const itemText = e.target.value;
     this.setState({
-      currentItem: { text: itemText, key: Date.now(), completed: false }
-    })
+      currentItem: e.target.value,
+    });
   }
 
   addItem = e => {
-    e.preventDefault()
-    const newItem = this.state.currentItem
-    if (newItem.text !== '') {
-      const items = [...this.state.items, newItem]
-      this.setState({
-        items: items,
-        currentItem: { text: '', key: '', completed: null },
-      })
-    }
+    e.preventDefault();
+    
+    this.setState(prevState => {
+      prevState.items.push({
+        text: prevState.currentItem,
+        key: Date.now(),
+        completed: false,
+      });
+
+      return {
+        items: prevState.items,
+        currentItem: null,
+      };
+    }, () => {
+      if (this.inputElement.current) {
+        this.inputElement.current.focus();
+      }
+    });
   }
 
   deleteItem = key => {
-    const filteredItems = this.state.items.filter(item => {
-      return item.key !== key
-    })
-    this.setState({
-      items: filteredItems,
-    })
+    this.setState(state => ({
+      items: state.items.filter(item => {
+        return item.key !== key;
+      }),
+    }), () => {
+      if (this.inputElement.current) {
+        this.inputElement.current.focus();
+      }
+    });
   }
 
   handleChange = (key, e) => {
