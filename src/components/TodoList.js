@@ -9,14 +9,18 @@ class TodoList extends Component {
 
         <form onSubmit={this.props.addItem}>
           <Input
-            action='Add'
+            action={{
+              content: 'Add',
+              disabled: !this.props.currentItem,
+            }}
             placeholder="Add Task"
             size='big'
             autoFocus
             fluid
             ref={this.props.inputElement}
-            value={this.props.currentItem.text}
-            onChange={this.props.handleInput} />
+            value={this.props.currentItem || ''}
+            onChange={this.props.handleInput}
+          />
         </form>
 
         <Divider hidden />
