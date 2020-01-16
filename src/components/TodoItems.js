@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Button, List } from 'semantic-ui-react'
 
 class TodoItems extends Component {

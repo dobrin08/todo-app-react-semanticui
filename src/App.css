@@ -5,3 +5,6 @@
 .ui.list-todos .item { display: flex; justify-content: space-between; align-items: center; width: 100%; }
 .ui.list-todos .item:after { display: none; }
 .ui.list-todos input { position: relative; top: -1px; margin-right: 10px; }
+
+/* Typography */
+.text-danger { color: #f20000; }

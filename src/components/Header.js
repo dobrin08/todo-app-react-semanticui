@@ -4,8 +4,8 @@ import { Menu } from 'semantic-ui-react'
 class Header extends React.Component {
   render() {
     return (
-       <div>
-         <Menu inverted>
+      <div>
+        <Menu inverted>
           <Menu.Item header>TODO's</Menu.Item>
           <Menu.Item position='right'>Total Tasks: {this.props.totalTasks}</Menu.Item>
          </Menu>
