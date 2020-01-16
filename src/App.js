@@ -54,20 +54,18 @@ class App extends React.Component {
   }
 
   handleChange = (key, e) => {
-    return this.state.items.find(item => {
-      if ( item.key === key ) {
-        if (e.target.checked) {
-          item.completed = true
-          this.setState({
-            completed: true,
-          })
-        } else {
-          item.completed = false
-          this.setState({
-            completed: false,
-          })
+    let isChecked = e.target.checked;
+
+    this.setState(prevState => {
+      prevState.items.map(item => {
+        if (item.key === key) {
+          item.completed = isChecked
         }
-      }
+      });
+
+      return {
+        items: prevState.items,
+      };
     })
   }
 
