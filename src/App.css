@@ -6,5 +6,8 @@
 .ui.list-todos .item:after { display: none; }
 .ui.list-todos input { position: relative; top: -1px; margin-right: 10px; }
 
-/* Typography */
+/* Typography Colors */
 .text-danger { color: #f20000; }
+
+/* Typography Alignment */
+.text-center { text-align: center !important; }

@@ -3,7 +3,7 @@ import Header from './components/Header';
 import TodoList from './components/TodoList';
 import TodoItems from './components/TodoItems';
 import BulkDelete from './components/BulkDelete';
-import { Container, Grid } from 'semantic-ui-react'
+import { Container, Grid, Button, Modal, Icon } from 'semantic-ui-react'
 
 import 'semantic-ui-less/semantic.less'
 import './App.css'
@@ -18,12 +18,16 @@ class App extends React.Component {
   };
   inputElement = React.createRef();
 
+  // Handle input
   handleInput = e => {
-    this.setState({
-      currentItem: e.target.value,
-    });
+    if ( e.target.value !== ' ' ) {
+      this.setState({
+        currentItem: e.target.value,
+      });
+    }
   }
 
+  // Add To-to item to the list
   addItem = e => {
     e.preventDefault();
 
@@ -60,6 +64,7 @@ class App extends React.Component {
     });
   }
 
+  // Delete To-to item from list
   deleteItem = key => {
     this.setState(state => ({
       items: state.items.filter(item => {
@@ -73,6 +78,7 @@ class App extends React.Component {
     });
   }
 
+  // Handle change of checkbox on To-do item
   handleChange = (key, e) => {
     let isChecked = e.target.checked;
 
@@ -83,16 +89,27 @@ class App extends React.Component {
         }
       });
 
+      let completedItems = this.state.items.filter(item => {
+        return item.completed === true;
+      }).length;
+
+      let isVisibleBulkDeleteTemp =  function () {
+        if ( completedItems > 0 ) {
+          return true
+        } else {
+          return false
+        }
+      };
+
       return {
         items: prevState.items,
-        itemsToDelete: this.state.items.filter(item => {
-          return item.completed === true;
-        }).length,
-        isVisibleBulkDelete: true
+        itemsToDelete: completedItems,
+        isVisibleBulkDelete: isVisibleBulkDeleteTemp()
       };
     })
   }
 
+  // Delete selected To-do items from list
   deleteSelected = () => {
     this.setState(state => ({
       items: state.items.filter(item => {
@@ -103,6 +120,9 @@ class App extends React.Component {
       displayMessage: false
     }))
   }
+
+  // Display/Hide Modal Popup that say To-do item exist
+  handleClose = () => this.setState({ displayMessage: false })
 
   render() {
     return (
@@ -119,12 +139,6 @@ class App extends React.Component {
                   handleInput={this.handleInput}
                   currentItem={this.state.currentItem} />
 
-                {
-                  this.state.displayMessage
-                    ? <div className='text-danger'>ToDo Item Exist</div>
-                    : null
-                }
-
                 <TodoItems
                   entries={this.state.items}
                   deleteItem={this.deleteItem}
@@ -137,6 +151,19 @@ class App extends React.Component {
                         itemsToDelete={this.state.itemsToDelete} />
                     : null
                 }
+
+                <Modal open={this.state.displayMessage}>
+                  <Modal.Content>
+                    <Modal.Description className='text-center'>
+                      <h2>This item exist</h2>
+                    </Modal.Description>
+                  </Modal.Content>
+                  <Modal.Actions className='text-center'>
+                    <Button color='green' onClick={this.handleClose} inverted>
+                      <Icon name='checkmark' /> Got it
+                    </Button>
+                  </Modal.Actions>
+                </Modal>
               </Grid.Column>
             </Grid.Row>
           </Grid>
