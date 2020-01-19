@@ -35,7 +35,7 @@ class App extends React.Component {
     let itemExist = null;
 
     this.state.items.some(item => {
-      if (this.state.currentItem === item.text) {
+      if (this.state.currentItem.replace(/^\s+|\s+$/g, "") === item.text.replace(/^\s+|\s+$/g, "")) {
         itemExist = true
       }
     });
