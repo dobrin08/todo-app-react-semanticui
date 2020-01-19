@@ -1,10 +1,30 @@
 import React, { Component } from 'react'
-import { Button, List } from 'semantic-ui-react'
+import { Button, List, Icon } from 'semantic-ui-react'
 
 class TodoItems extends Component {
   createTasks = item => {
     return (
       <List.Item key={item.key}>
+        <List.Content floated='right'>
+          <Button
+            size='mini'
+            color='green'
+            icon
+            onClick={() => this.props.setItemDone(item.key)}
+          >
+            <Icon name='check' />
+          </Button>
+
+          <Button
+            size='mini'
+            color='red'
+            icon
+            onClick={() => this.props.deleteItem(item.key)}
+          >
+            <Icon name='trash' />
+          </Button>
+        </List.Content>
+
         <List.Content>
           <input
             type="checkbox"
@@ -14,8 +34,6 @@ class TodoItems extends Component {
             {item.text}
           </span>
         </List.Content>
-
-        <Button size='mini' color='red' onClick={() => this.props.deleteItem(item.key)}>Remove</Button>
       </List.Item>
     )
   }
@@ -23,7 +41,7 @@ class TodoItems extends Component {
   render() {
     const todoEntries = this.props.entries;
     const listItems = todoEntries.map(this.createTasks);
-    return <List divided className="list-todos">{listItems}</List>
+    return <List divided verticalAlign='middle' className='list-todos'>{listItems}</List>
   }
 }
 

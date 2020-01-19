@@ -13,6 +13,7 @@ class App extends React.Component {
     items: [],
     currentItem: null,
     itemsToDelete: null,
+    itemsDone: 0,
     isVisibleBulkDelete: false,
     displayMessage: false
   };
@@ -33,11 +34,11 @@ class App extends React.Component {
 
     let itemExist = null;
 
-    this.state.items.map(item => {
+    this.state.items.some(item => {
       if (this.state.currentItem === item.text) {
         itemExist = true
       }
-    })
+    });
 
     this.setState(prevState => {
       if (!itemExist) {
@@ -50,7 +51,6 @@ class App extends React.Component {
         return {
           items: prevState.items,
           currentItem: null,
-          displayMessage: false
         };
       } else {
         return {
@@ -64,70 +64,105 @@ class App extends React.Component {
     });
   }
 
-  // Delete To-to item from list
-  deleteItem = key => {
-    this.setState(state => ({
-      items: state.items.filter(item => {
-        return item.key !== key;
-      }),
-      displayMessage: false
-    }), () => {
+  // Get count of done items
+  itemsDone = () => this.state.items.filter(item => {
+    return item.completed === true;
+  }).length;
+
+  // Set item done
+  setItemDone = key => {
+    this.setState(prevState => {
+      prevState.items.forEach(item => {
+        if (item.key === key) {
+          item.completed = !item.completed
+        }
+      });
+
+      return {
+        items: prevState.items,
+        itemsDone: this.itemsDone(),
+      };
+    }, () => {
       if (this.inputElement.current) {
         this.inputElement.current.focus();
-      }
-    });
+    }});
   }
 
-  // Handle change of checkbox on To-do item
+  // Get count of items to delete
+  itemsTodelete = () => this.state.items.filter(item => {
+    return item.bulkDelete === true;
+  }).length;
+
+  isVisibleBulkDelete = (param) => {
+    if ( param > 0 ) {
+      return true
+    } else {
+      return false
+    }
+  };
+
+  // Select multiple To-do items
   handleChange = (key, e) => {
     let isChecked = e.target.checked;
 
     this.setState(prevState => {
       prevState.items.map(item => {
         if (item.key === key) {
-          item.completed = isChecked
+          item.bulkDelete = isChecked
         }
       });
 
-      let completedItems = this.state.items.filter(item => {
-        return item.completed === true;
-      }).length;
-
-      let isVisibleBulkDeleteTemp =  function () {
-        if ( completedItems > 0 ) {
-          return true
-        } else {
-          return false
-        }
-      };
-
       return {
         items: prevState.items,
-        itemsToDelete: completedItems,
-        isVisibleBulkDelete: isVisibleBulkDeleteTemp()
+        itemsToDelete: this.itemsTodelete(),
+        isVisibleBulkDelete: this.isVisibleBulkDelete(this.itemsTodelete()),
       };
     })
   }
 
-  // Delete selected To-do items from list
+  // Delete To-to item
+  deleteItem = key => {
+    this.setState(state => ({
+      items: state.items.filter(item => {
+        return item.key !== key;
+      }),
+      itemsToDelete: this.state.itemsToDelete - 1,
+      isVisibleBulkDelete: this.state.itemsToDelete - 1 > 0 ? true : false,
+    }), () => {
+      if (this.inputElement.current) {
+        this.inputElement.current.focus();
+      }
+
+      this.setState(state => ({
+        itemsDone: this.itemsDone(),
+      }))
+    });
+  }
+
+  // Delete All selected To-do items
   deleteSelected = () => {
     this.setState(state => ({
       items: state.items.filter(item => {
-        return item.completed === false;
+        return item.bulkDelete !== true;
       }),
       itemsToDelete: null,
       isVisibleBulkDelete: false,
-      displayMessage: false
-    }))
+    }), () => {
+      this.setState(state => ({
+        itemsDone: this.itemsDone(),
+      }))
+    })
   }
 
-  // Display/Hide Modal Popup that say To-do item exist
+  // Hide Modal Popup that say To-do item exist
   handleClose = () => this.setState({ displayMessage: false })
 
   render() {
     return (
       <div className="wrapper">
-        <Header totalTasks = {this.state.items.length} />
+        <Header
+            totalTasks={this.state.items.length}
+            itemsDone={this.state.itemsDone} />
 
         <Container>
           <Grid>
@@ -142,6 +177,7 @@ class App extends React.Component {
                 <TodoItems
                   entries={this.state.items}
                   deleteItem={this.deleteItem}
+                  setItemDone={this.setItemDone}
                   handleChange={this.handleChange} />
 
                 {

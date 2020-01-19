@@ -7,7 +7,10 @@ class Header extends React.Component {
       <div>
         <Menu inverted>
           <Menu.Item header>TODO's</Menu.Item>
-          <Menu.Item position='right'>Total Tasks: {this.props.totalTasks}</Menu.Item>
+          <Menu.Item
+            position='right'>
+              { this.props.itemsDone > 0 ? 'Items Done: ' + this.props.itemsDone + ' | ': null } Total Tasks: { this.props.totalTasks }
+          </Menu.Item>
          </Menu>
        </div>
     )
