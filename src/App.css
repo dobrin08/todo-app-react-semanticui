@@ -3,6 +3,7 @@
 
 /* List Todos */
 .ui.list-todos input { margin-right: 10px; }
+.ui.list-todos .content { white-space: pre-wrap; }
 
 /* Typography Colors */
 .text-danger { color: #f20000; }

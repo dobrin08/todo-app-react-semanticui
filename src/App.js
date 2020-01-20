@@ -33,9 +33,10 @@ class App extends React.Component {
     e.preventDefault();
 
     let itemExist = null;
+    let currentItem = this.state.currentItem.replace(/^\s+|\s+$/g, "")
 
     this.state.items.some(item => {
-      if (this.state.currentItem.replace(/^\s+|\s+$/g, "") === item.text.replace(/^\s+|\s+$/g, "")) {
+      if ( currentItem === item.text ) {
         itemExist = true
       }
     });
@@ -43,7 +44,7 @@ class App extends React.Component {
     this.setState(prevState => {
       if (!itemExist) {
         prevState.items.push({
-          text: prevState.currentItem,
+          text: prevState.currentItem.replace(/^\s+|\s+$/g, ""),
           key: Date.now(),
           completed: false,
         });
