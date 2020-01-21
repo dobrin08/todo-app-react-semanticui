@@ -8,11 +8,11 @@ class TodoItems extends Component {
         <List.Content floated='right'>
           <Button
             size='mini'
-            color='green'
+            color={item.completed ? 'yellow' : 'green'}
             icon
             onClick={() => this.props.setItemDone(item.key)}
           >
-            <Icon name='check' />
+            <Icon name={item.completed ? 'undo' : 'check'} />
           </Button>
 
           <Button
@@ -28,7 +28,8 @@ class TodoItems extends Component {
         <List.Content>
           <input
             type="checkbox"
-            onChange={(event) => this.props.handleChange(item.key, event)} />
+            checked={item.selected}
+            onChange={e => this.props.handleChange(item.key, e.target.checked)} />
 
           <span style={{ textDecoration: item.completed ? "line-through" : ""}}>
             {item.text}

@@ -12,9 +12,6 @@ class App extends React.Component {
   state = {
     items: [],
     currentItem: null,
-    itemsToDelete: null,
-    itemsDone: 0,
-    isVisibleBulkDelete: false,
     displayMessage: false
   };
   inputElement = React.createRef();
@@ -32,21 +29,17 @@ class App extends React.Component {
   addItem = e => {
     e.preventDefault();
 
-    let itemExist = null;
-    let currentItem = this.state.currentItem.replace(/^\s+|\s+$/g, "")
-
-    this.state.items.some(item => {
-      if ( currentItem === item.text ) {
-        itemExist = true
-      }
-    });
+    const itemExist = this.state.items.some(item => (
+      this.state.currentItem.trim() === item.text
+    ));
 
     this.setState(prevState => {
       if (!itemExist) {
         prevState.items.push({
-          text: prevState.currentItem.replace(/^\s+|\s+$/g, ""),
+          text: prevState.currentItem,
           key: Date.now(),
           completed: false,
+          selected: false,
         });
 
         return {
@@ -89,34 +82,18 @@ class App extends React.Component {
     }});
   }
 
-  // Get count of items to delete
-  itemsTodelete = () => this.state.items.filter(item => {
-    return item.bulkDelete === true;
-  }).length;
-
-  isVisibleBulkDelete = (param) => {
-    if ( param > 0 ) {
-      return true
-    } else {
-      return false
-    }
-  };
-
   // Select multiple To-do items
-  handleChange = (key, e) => {
-    let isChecked = e.target.checked;
-
+  handleChange = (key, checked) => {
+    console.log(checked);
     this.setState(prevState => {
-      prevState.items.map(item => {
-        if (item.key === key) {
-          item.bulkDelete = isChecked
-        }
-      });
-
       return {
-        items: prevState.items,
-        itemsToDelete: this.itemsTodelete(),
-        isVisibleBulkDelete: this.isVisibleBulkDelete(this.itemsTodelete()),
+        items: prevState.items.map(item => {
+          if (item.key === key) {
+            item.selected = checked;
+          }
+  
+          return item;
+        }),
       };
     })
   }
@@ -127,16 +104,10 @@ class App extends React.Component {
       items: state.items.filter(item => {
         return item.key !== key;
       }),
-      itemsToDelete: this.state.itemsToDelete - 1,
-      isVisibleBulkDelete: this.state.itemsToDelete - 1 > 0 ? true : false,
     }), () => {
       if (this.inputElement.current) {
         this.inputElement.current.focus();
       }
-
-      this.setState(state => ({
-        itemsDone: this.itemsDone(),
-      }))
     });
   }
 
@@ -144,26 +115,21 @@ class App extends React.Component {
   deleteSelected = () => {
     this.setState(state => ({
       items: state.items.filter(item => {
-        return item.bulkDelete !== true;
+        return item.selected !== true;
       }),
-      itemsToDelete: null,
-      isVisibleBulkDelete: false,
-    }), () => {
-      this.setState(state => ({
-        itemsDone: this.itemsDone(),
-      }))
-    })
-  }
+    }))
+  };
 
   // Hide Modal Popup that say To-do item exist
-  handleClose = () => this.setState({ displayMessage: false })
+  handleClose = () => this.setState({ displayMessage: false });
 
   render() {
     return (
       <div className="wrapper">
         <Header
-            totalTasks={this.state.items.length}
-            itemsDone={this.state.itemsDone} />
+          totalTasks={this.state.items.length}
+          itemsDone={this.state.items.filter(item => item.completed).length}
+        />
 
         <Container>
           <Grid>
@@ -181,13 +147,10 @@ class App extends React.Component {
                   setItemDone={this.setItemDone}
                   handleChange={this.handleChange} />
 
-                {
-                  this.state.isVisibleBulkDelete
-                    ? <BulkDelete
-                        deleteSelected={this.deleteSelected}
-                        itemsToDelete={this.state.itemsToDelete} />
-                    : null
-                }
+                  <BulkDelete
+                    deleteSelected={this.deleteSelected}
+                    selectedItems={this.state.items.filter(item => item.selected).length}
+                  />
 
                 <Modal open={this.state.displayMessage}>
                   <Modal.Content>
