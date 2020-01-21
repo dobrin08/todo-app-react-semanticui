@@ -1,6 +1,9 @@
 /* Menu */
 .ui.menu { border-radius: 0; }
 
+/* Add todo */
+.add-todo { margin: 2rem 0; }
+
 /* List Todos */
 .ui.list-todos input { margin-right: 10px; }
 .ui.list-todos .content { white-space: pre-wrap; }

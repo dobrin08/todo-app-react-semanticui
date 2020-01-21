@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header';
-import TodoList from './components/TodoList';
+import AddTodo from './components/AddTodo';
 import TodoItems from './components/TodoItems';
 import BulkDelete from './components/BulkDelete';
 import { Container, Grid, Button, Modal, Icon } from 'semantic-ui-react';
@@ -105,7 +105,7 @@ class App extends React.Component {
           if (item.key === key) {
             item.selected = checked;
           }
-  
+
           return item;
         }),
       }
@@ -149,7 +149,7 @@ class App extends React.Component {
           <Grid>
             <Grid.Row centered>
               <Grid.Column mobile={16} computer={10}>
-                <TodoList
+                <AddTodo
                   addItem={this.addItem}
                   inputElement={this.inputElement}
                   handleInput={this.handleInput}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, List, Icon} from 'semantic-ui-react';
+import {Button, List, Icon, Segment, Dimmer, Loader} from 'semantic-ui-react';
 import * as PropTypes from "prop-types";
 
 class TodoItems extends Component {
@@ -41,14 +41,13 @@ class TodoItems extends Component {
   };
 
   render() {
-    const todoEntries = this.props.entries;
-    const listItems = todoEntries.map(this.createTasks);
-
-    if (this.props.loading) {
-      return <h3>I'm loading now..</h3>;
-    }
-
-    return <List divided verticalAlign='middle' className='list-todos'>{listItems}</List>
+    return this.props.loading
+      ? <Segment style={{ padding: "40px 15px" }}>
+          <Dimmer active inverted>
+            <Loader content='Loading' />
+          </Dimmer>
+        </Segment>
+      : <List divided verticalAlign='middle' className='list-todos'>{ this.props.entries.map(this.createTasks) }</List>
   }
 }
 
@@ -63,12 +62,9 @@ TodoItems.propTypes = {
 TodoItems.defaultProps = {
   loading: false,
   entries: [],
-  deleteItem: () => {
-  },
-  setItemDone: () => {
-  },
-  handleChange: () => {
-  },
+  deleteItem: () => {},
+  setItemDone: () => {},
+  handleChange: () => {},
 };
 
 export default TodoItems;

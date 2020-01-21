@@ -4,17 +4,18 @@ import {Button} from 'semantic-ui-react';
 
 class BulkDelete extends Component {
   render() {
-    if (this.props.selectedItems === 0) {
-      return null;
-    }
-
     return (
-      <Button
-        color='red'
-        onClick={this.props.deleteSelected}
-      >
-        Delete {this.props.selectedItems} items
-      </Button>
+      <React.Fragment>
+        {this.props.selectedItems
+          ? <Button
+              color='red'
+              onClick={this.props.deleteSelected}
+            >
+              Delete {this.props.selectedItems} items
+            </Button>
+          : null
+        }
+      </React.Fragment>
     )
   }
 }
@@ -26,8 +27,7 @@ BulkDelete.propTypes = {
 
 BulkDelete.defaultProps = {
   selectedItems: 0,
-  deleteSelected: () => {
-  },
+  deleteSelected: () => {},
 };
 
 export default BulkDelete;
