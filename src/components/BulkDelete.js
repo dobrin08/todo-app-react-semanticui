@@ -1,21 +1,23 @@
-import React from 'react';
+import React, {Component} from 'react';
 import * as PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
+import {Button} from 'semantic-ui-react';
 
-const BulkDelete = ({ deleteSelected, selectedItems }) => {
-  if (selectedItems === 0) {
-    return null;
+class BulkDelete extends Component {
+  render() {
+    if (this.props.selectedItems === 0) {
+      return null;
+    }
+
+    return (
+      <Button
+        color='red'
+        onClick={this.props.deleteSelected}
+      >
+        Delete {this.props.selectedItems} items
+      </Button>
+    )
   }
-
-  return (
-    <Button
-      color='red'
-      onClick={deleteSelected}
-    >
-      Delete {selectedItems} items
-    </Button>
-  )
-};
+}
 
 BulkDelete.propTypes = {
   selectedItems: PropTypes.number,
@@ -24,7 +26,8 @@ BulkDelete.propTypes = {
 
 BulkDelete.defaultProps = {
   selectedItems: 0,
-  deleteSelected: () => {},
+  deleteSelected: () => {
+  },
 };
 
 export default BulkDelete;

@@ -3,7 +3,7 @@ import Header from './components/Header';
 import TodoList from './components/TodoList';
 import TodoItems from './components/TodoItems';
 import BulkDelete from './components/BulkDelete';
-import { Container, Grid, Button, Modal, Icon } from 'semantic-ui-react'
+import { Container, Grid, Button, Modal, Icon } from 'semantic-ui-react';
 
 import 'semantic-ui-less/semantic.less'
 import './App.css'
@@ -12,9 +12,24 @@ class App extends React.Component {
   state = {
     items: [],
     currentItem: null,
-    displayMessage: false
+    displayMessage: false,
+    loading: true,
   };
   inputElement = React.createRef();
+
+  componentDidMount() {
+    setTimeout(() => {
+      const storageItems = JSON.parse(localStorage.getItem("items"));
+      this.setState({
+        loading: false,
+        items: storageItems || [],
+      });
+    }, 1500);
+  };
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    localStorage.setItem("items", JSON.stringify(this.state.items));
+  };
 
   // Handle input
   handleInput = e => {
@@ -23,7 +38,7 @@ class App extends React.Component {
         currentItem: e.target.value,
       });
     }
-  }
+  };
 
   // Add To-to item to the list
   addItem = e => {
@@ -56,7 +71,7 @@ class App extends React.Component {
         this.inputElement.current.focus();
       }
     });
-  }
+  };
 
   // Get count of done items
   itemsDone = () => this.state.items.filter(item => {
@@ -68,7 +83,7 @@ class App extends React.Component {
     this.setState(prevState => {
       prevState.items.forEach(item => {
         if (item.key === key) {
-          item.completed = !item.completed
+          item.completed = !item.completed;
         }
       });
 
@@ -80,11 +95,10 @@ class App extends React.Component {
       if (this.inputElement.current) {
         this.inputElement.current.focus();
     }});
-  }
+  };
 
   // Select multiple To-do items
   handleChange = (key, checked) => {
-    console.log(checked);
     this.setState(prevState => {
       return {
         items: prevState.items.map(item => {
@@ -94,9 +108,9 @@ class App extends React.Component {
   
           return item;
         }),
-      };
-    })
-  }
+      }
+    });
+  };
 
   // Delete To-to item
   deleteItem = key => {
@@ -109,7 +123,7 @@ class App extends React.Component {
         this.inputElement.current.focus();
       }
     });
-  }
+  };
 
   // Delete All selected To-do items
   deleteSelected = () => {
@@ -142,6 +156,7 @@ class App extends React.Component {
                   currentItem={this.state.currentItem} />
 
                 <TodoItems
+                  loading={this.state.loading}
                   entries={this.state.items}
                   deleteItem={this.deleteItem}
                   setItemDone={this.setItemDone}

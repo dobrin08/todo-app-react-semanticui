@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
-import { Input, Divider } from 'semantic-ui-react'
+import React, {Component} from 'react';
+import {Input, Divider} from 'semantic-ui-react';
+import * as PropTypes from "prop-types";
 
 class TodoList extends Component {
   render() {
     return (
       <div className="todoListMain">
-        <Divider hidden />
+        <Divider hidden/>
 
         <form onSubmit={this.props.addItem}>
           <Input
@@ -23,10 +24,27 @@ class TodoList extends Component {
           />
         </form>
 
-        <Divider hidden />
+        <Divider hidden/>
       </div>
     )
   }
 }
+
+TodoList.propTypes = {
+  addItem: PropTypes.func,
+  inputElement: PropTypes.object,
+  handleInput: PropTypes.func,
+  currentItem: PropTypes.string,
+};
+
+TodoList.defaultProps = {
+  addItem: () => {
+  },
+  inputElement: () => {
+  },
+  handleInput: () => {
+  },
+  currentItem: '',
+};
 
 export default TodoList;
