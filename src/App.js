@@ -185,7 +185,7 @@ class App extends React.Component {
         </Container>
 
         <footer className="footer" inverted>
-          <a href="https://github.com/dobrin08/todo-app-react-semanticui"><Icon name='github' /></a>
+          <a href="https://github.com/dobrin08/todo-app-react-semanticui" target="_blank"><Icon name='github' /></a>
         </footer>
       </div>
     );
