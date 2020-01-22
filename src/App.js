@@ -183,6 +183,10 @@ class App extends React.Component {
             </Grid.Row>
           </Grid>
         </Container>
+
+        <footer className="footer" inverted>
+          <a href="https://github.com/dobrin08/todo-app-react-semanticui"><Icon name='github' /></a>
+        </footer>
       </div>
     );
   }
