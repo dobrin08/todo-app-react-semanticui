@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {Input} from 'semantic-ui-react';
 import * as PropTypes from "prop-types";
+import CSS from './addtodo.module.scss';
 
 class AddTodo extends Component {
   render() {
     return (
       <form
         onSubmit={this.props.addItem}
-        className="add-todo"
+        className={CSS.addTodo}
       >
         <Input
           action={{

@@ -1,12 +1,16 @@
 import React from 'react';
-import Header from './components/Header';
-import AddTodo from './components/AddTodo';
+import Header from './components/Header/index';
+import Footer from './components/Footer/index';
+import Sidebar from "./components/Sidebar";
+import AddTodo from './components/AddTodo/index';
+import Toolbar from "./components/Toolbar/index";
 import TodoItems from './components/TodoItems';
 import BulkDelete from './components/BulkDelete';
-import { Container, Grid, Button, Modal, Icon } from 'semantic-ui-react';
+import {Container, Grid, Button, Modal, Icon, Label, Card} from 'semantic-ui-react';
 
 import 'semantic-ui-less/semantic.less'
 import './App.css'
+
 
 class App extends React.Component {
   state = {
@@ -33,7 +37,7 @@ class App extends React.Component {
 
   // Handle input
   handleInput = e => {
-    if ( e.target.value !== ' ' ) {
+    if (e.target.value !== ' ') {
       this.setState({
         currentItem: e.target.value,
       });
@@ -94,7 +98,8 @@ class App extends React.Component {
     }, () => {
       if (this.inputElement.current) {
         this.inputElement.current.focus();
-    }});
+      }
+    });
   };
 
   // Select multiple To-do items
@@ -135,7 +140,7 @@ class App extends React.Component {
   };
 
   // Hide Modal Popup that say To-do item exist
-  handleClose = () => this.setState({ displayMessage: false });
+  handleClose = () => this.setState({displayMessage: false});
 
   render() {
     return (
@@ -148,24 +153,28 @@ class App extends React.Component {
         <Container>
           <Grid>
             <Grid.Row centered>
-              <Grid.Column mobile={16} computer={10}>
+              <Sidebar/>
+
+              <Grid.Column mobile={16} computer={11}>
                 <AddTodo
                   addItem={this.addItem}
                   inputElement={this.inputElement}
                   handleInput={this.handleInput}
-                  currentItem={this.state.currentItem} />
+                  currentItem={this.state.currentItem}/>
+
+                <Toolbar/>
 
                 <TodoItems
                   loading={this.state.loading}
                   entries={this.state.items}
                   deleteItem={this.deleteItem}
                   setItemDone={this.setItemDone}
-                  handleChange={this.handleChange} />
+                  handleChange={this.handleChange}/>
 
-                  <BulkDelete
-                    deleteSelected={this.deleteSelected}
-                    selectedItems={this.state.items.filter(item => item.selected).length}
-                  />
+                <BulkDelete
+                  deleteSelected={this.deleteSelected}
+                  selectedItems={this.state.items.filter(item => item.selected).length}
+                />
 
                 <Modal open={this.state.displayMessage}>
                   <Modal.Content>
@@ -175,7 +184,7 @@ class App extends React.Component {
                   </Modal.Content>
                   <Modal.Actions className='text-center'>
                     <Button color='green' onClick={this.handleClose} inverted>
-                      <Icon name='checkmark' /> Got it
+                      <Icon name='checkmark'/> Got it
                     </Button>
                   </Modal.Actions>
                 </Modal>
@@ -184,9 +193,7 @@ class App extends React.Component {
           </Grid>
         </Container>
 
-        <footer className="footer" inverted>
-          <a href="https://github.com/dobrin08/todo-app-react-semanticui" target="_blank"><Icon name='github' /></a>
-        </footer>
+        <Footer/>
       </div>
     );
   }

@@ -1,8 +1,5 @@
-/* Menu */
-.ui.menu { border-radius: 0; }
-
-/* Add todo */
-.add-todo { margin: 2rem 0; }
+/* Common styles */
+.clearfix:after { content: ""; clear: both; display: table; }
 
 /* List Todos */
 .ui.list-todos input { margin-right: 10px; }
@@ -14,5 +11,3 @@
 /* Typography Alignment */
 .text-center { text-align: center !important; }
 
-/* Footer */
-.footer { position: fixed; right: 0; bottom: 0; left: 0; padding: .5rem 1rem; background: #1B1C1D; }
