@@ -6,7 +6,7 @@ import AddTodo from './components/AddTodo/index';
 import Toolbar from "./components/Toolbar/index";
 import TodoItems from './components/TodoItems';
 import BulkDelete from './components/BulkDelete';
-import {Container, Grid, Button, Modal, Icon, Label, Card} from 'semantic-ui-react';
+import {Container, Grid, Button, Modal, Icon} from 'semantic-ui-react';
 
 import 'semantic-ui-less/semantic.less'
 import './App.css'

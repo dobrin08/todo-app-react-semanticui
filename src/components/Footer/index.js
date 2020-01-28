@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {Icon} from "semantic-ui-react";
-import CSS from './footer.module.scss';
+import './footer.scss';
 
 class Footer extends Component {
   render() {
     return (
       <footer
-        className={CSS.footer}
+        className="footer"
         inverted
       >
-        <a href="https://github.com/dobrin08/todo-app-react-semanticui" target="_blank">
+        <a href="https://github.com/dobrin08/todo-app-react-semanticui" target="_blank" rel="noopener noreferrer">
           <Icon name='github'/>
         </a>
       </footer>
